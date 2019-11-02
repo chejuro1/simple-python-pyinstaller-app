@@ -8,14 +8,15 @@ pipeline {
         }
 
       }
-      when {
-        branch 'master'
-      }
+    
       steps {
         sh 'python -m py_compile sources/add2vals.py sources/calc.py'
       }
     }
     stage('test') {
+        when {
+        branch 'dev'
+      }
       agent {
         docker {
           image 'qnib/pytest'
@@ -34,6 +35,9 @@ pipeline {
       }
     }
     stage('prod') {
+      when {
+                branch 'master' 
+            }
       agent {
         docker {
           image 'python:2-alpine'
