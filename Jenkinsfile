@@ -4,6 +4,9 @@ pipeline {
     stage('Built') {
       parallel {
         stage('Built') {
+         when {
+                branch 'master' 
+            }
           agent {
             docker {
               image 'python:2-alpine'
@@ -15,6 +18,9 @@ pipeline {
           }
         }
         stage('prod') {
+          when {
+                branch 'dev' 
+            }
           agent {
             docker {
               image 'python:2-alpine'
