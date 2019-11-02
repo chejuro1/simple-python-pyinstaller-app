@@ -28,21 +28,36 @@ pipeline {
       }
     }
     stage('test') {
-      agent {
-        docker {
-          image 'qnib/pytest'
+      parallel {
+        stage('test') {
+          agent {
+            docker {
+              image 'qnib/pytest'
+            }
+
+          }
+          post {
+            always {
+              junit 'test-reports/results.xml'
+
+            }
+
+          }
+          steps {
+            sh 'py.test --verbose --junit-xml test-reports/results.xml sources/test_calc.py'
+          }
         }
+        stage('funct') {
+          agent {
+            docker {
+              image 'qnib/pytest'
+            }
 
-      }
-      post {
-        always {
-          junit 'test-reports/results.xml'
-
+          }
+          steps {
+            sh 'py.test --verbose --junit-xml test-reports/results.xml sources/test_calc.py'
+          }
         }
-
-      }
-      steps {
-        sh 'py.test --verbose --junit-xml test-reports/results.xml sources/test_calc.py'
       }
     }
   }
