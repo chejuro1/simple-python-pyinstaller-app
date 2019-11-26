@@ -1,52 +1,15 @@
 pipeline {
-  agent none
-  stages {
-    stage('Built') {
-      agent {
-        docker {
-          image 'python:2-alpine'
-        }
-
-      }
-    
-      steps {
-        sh 'python -m py_compile sources/add2vals.py sources/calc.py'
-      }
-    }
-    stage('test') {
-        when {
-        branch 'dev'
-      }
-      agent {
-        docker {
-          image 'qnib/pytest'
-        }
-
-      }
-      post {
-        always {
-          junit 'test-reports/results.xml'
-
-        }
-
-      }
-      steps {
-        sh 'py.test --verbose --junit-xml test-reports/results.xml sources/test_calc.py'
-      }
-    }
-    stage('prod') {
-      when {
-                branch 'master' 
+    agent none 
+    stages {
+        stage('Build') { 
+            agent {
+                docker {
+                    image 'python:2-alpine' 
+                }
             }
-      agent {
-        docker {
-          image 'python:2-alpine'
+            steps {
+                sh 'python -m py_compile sources/add2vals.py sources/calc.py' 
+            }
         }
-
-      }
-      steps {
-        sh 'python -m py_compile sources/add2vals.py sources/calc.py'
-      }
     }
-  }
 }
