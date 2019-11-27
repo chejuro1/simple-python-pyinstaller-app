@@ -21,7 +21,7 @@ pipeline {
                 }
             }
              when {
-                branch 'developer'
+                branch "developer"
             }
             steps {
                 sh 'py.test --verbose --junit-xml test-reports/results.xml sources/test_calc.py'
