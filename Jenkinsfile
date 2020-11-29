@@ -9,13 +9,8 @@ pipeline {
                 //docker {
                    // image 'python:2-alpine'
                 //}
-                dockerfile {
-                filename 'Dockerfile'
-                //dir 'build'
-                label 'python:2-alpine'
-               //additionalBuildArgs  '--build-arg version=1.0.2'
-               args '-v /tmp:/tmp'
-    }
+                               
+                dockerfile true
             }
             steps {
                 sh 'python -m py_compile sources/add2vals.py sources/calc.py'
