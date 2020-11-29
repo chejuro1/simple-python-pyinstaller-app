@@ -13,6 +13,7 @@ pipeline {
                 dockerfile true
             }
             steps {
+                sh 'docker images'
                 sh 'python -m py_compile sources/add2vals.py sources/calc.py'
             }
         }
